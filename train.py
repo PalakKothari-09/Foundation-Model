@@ -90,6 +90,9 @@ def train(args):
     ckpt_path = os.path.join(args.out_dir, "ckpt.pt")
     log_path = os.path.join(args.out_dir, "log.csv")
     resume_path = ckpt_path if args.resume == "auto" else args.resume
+    if args.resume == "auto" and not os.path.exists(ckpt_path):
+        print("no checkpoint yet, starting from scratch")  # makes the same command safe for first run and re-runs
+        resume_path = None
     if resume_path:
         step, extra = load_checkpoint(resume_path, model, opt, sched, scaler, map_location=device)
         if "rng" in extra:
