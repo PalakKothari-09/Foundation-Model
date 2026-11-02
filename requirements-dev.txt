@@ -1,0 +1,7 @@
+-r requirements.txt
+numpy
+pytest
+tqdm
+matplotlib
+psutil
+wandb

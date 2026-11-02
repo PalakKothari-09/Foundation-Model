@@ -1,0 +1,33 @@
+﻿[compression] 10 random valid stories: 7610 bytes / 1839 tokens = 4.138 bytes/token
+[Q3] score std raw=5.81 (~sqrt(32)=5.66), scaled=1.10
+     raw    max-prob per row=[0.987, 0.959, 0.805] entropy=[0.08, 0.21, 0.7] (uniform over 16 = 2.77)
+     scaled max-prob per row=[0.316, 0.257, 0.221] entropy=[2.23, 2.37, 2.29] (uniform over 16 = 2.77)
+     max |d softmax/d score|: raw=0.0125, scaled=0.2162
+[Q4] q_i . k_j after RoPE (same q, k at every position):
+     i= 3 j= 1 i-j=2: -10.142669
+     i=10 j= 8 i-j=2: -10.142670
+     i=25 j=23 i-j=2: -10.142669
+     i= 7 j= 2 i-j=5: -8.993098
+     i=30 j=25 i-j=5: -8.993094
+     i= 5 j= 5 i-j=0: -11.434472
+     i=20 j=20 i-j=0: -11.434472
+     (without RoPE every pair gives -11.434472)
+[Q5] total params 22,696,448; embedding+output 10,240,000 (45.1%); blocks 12,455,936
+[Q6 (ours)] total 9.53 GFLOPs / forward pass
+     q,k,v,o projections (per layer)       0.537 G  x4 =    2.147 G (22.5%)
+     attention QK^T (per layer)            0.067 G  x4 =    0.268 G (2.8%)
+     attention AV (per layer)              0.067 G  x4 =    0.268 G (2.8%)
+     SwiGLU w1,w3,w2 (per layer)           1.057 G  x4 =    4.228 G (44.3%)
+     output projection (lm_head)           2.621 G (27.5%)
+[Q7 (GPT-2 small)] total 291.65 GFLOPs / forward pass
+     q,k,v,o projections (per layer)       4.832 G  x12 =   57.982 G (19.9%)
+     attention QK^T (per layer)            1.611 G  x12 =   19.327 G (6.6%)
+     attention AV (per layer)              1.611 G  x12 =   19.327 G (6.6%)
+     SwiGLU w1,w3,w2 (per layer)           9.664 G  x12 =  115.964 G (39.8%)
+     output projection (lm_head)          79.047 G (27.1%)
+[Q8] fp32: params 86.6 MiB, grads 86.6 MiB, AdamW m+v 173.2 MiB -> 346.3 MiB total
+[warm-up] SGD on mean(w^2), w = 5*randn(10,10); grad = 2w/100 -> update factor (1 - lr/50)
+     lr=    1: 26.3, 25.2, 24.2, 23.3, 22.4, 21.5, 20.6, 19.8, 19, 18.3
+     lr=   10: 26.3, 16.8, 10.8, 6.89, 4.41, 2.82, 1.81, 1.16, 0.739, 0.473
+     lr=  100: 26.3, 26.3, 26.3, 26.3, 26.3, 26.3, 26.3, 26.3, 26.3, 26.3
+     lr= 1000: 26.3, 9.48e+03, 3.42e+06, 1.24e+09, 4.46e+11, 1.61e+14, 5.81e+16, 2.1e+19, 7.58e+21, 2.74e+24
