@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import sys
 import time
 
 import torch
@@ -25,7 +26,9 @@ def load_model(model_dir, device="cpu"):
 
 
 def main():
-    ap = argparse.ArgumentParser()
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1252
+    ap =argparse.ArgumentParser()
     ap.add_argument("--model-dir", default="release")
     ap.add_argument("--prompt", default="Once upon a time")
     ap.add_argument("--max-new-tokens", type=int, default=256)

@@ -18,7 +18,9 @@ TINY = ["--vocab-size", "300", "--context-length", "32", "--d-model", "32", "--n
 
 
 def run(*args):
-    return subprocess.run([sys.executable, *map(str, args)], cwd=ROOT, capture_output=True, text=True, check=True)
+    r = subprocess.run([sys.executable, *map(str, args)], cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
+    assert r.returncode == 0, r.stderr[-2000:]
+    return r
 
 
 def test_train_resume_release_inference(tmp_path):
